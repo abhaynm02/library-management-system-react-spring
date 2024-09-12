@@ -1,0 +1,12 @@
+spring:
+  application:
+  name: library_management
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/library
+    username: root
+    password: nm@1225
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
