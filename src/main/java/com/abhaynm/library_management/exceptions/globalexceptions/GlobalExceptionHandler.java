@@ -1,6 +1,9 @@
 package com.abhaynm.library_management.exceptions.globalexceptions;
 
 
+import com.abhaynm.library_management.dto.ResponseModel;
+import com.abhaynm.library_management.exceptions.coustomexceptions.BookAddingFailedException;
+import com.abhaynm.library_management.exceptions.coustomexceptions.BookNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,5 +30,15 @@ public class GlobalExceptionHandler {
         });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+    @ExceptionHandler(BookAddingFailedException.class)
+    public ResponseEntity<ResponseModel<?>>handleBookAddingFailedException(BookAddingFailedException ex){
+        ResponseModel<?>responseModel=new ResponseModel<>("failure",ex.getMessage(),null);
+        return new ResponseEntity<>(responseModel,HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<ResponseModel<?>>handleBookNotFoundException(BookNotFoundException ex){
+        ResponseModel<?>responseModel=new ResponseModel<>("failure",ex.getMessage(),null);
+        return new ResponseEntity<>(responseModel,HttpStatus.NOT_FOUND);
     }
 }
