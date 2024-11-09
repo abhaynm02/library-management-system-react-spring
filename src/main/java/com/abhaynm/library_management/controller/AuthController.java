@@ -21,13 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthenticationService authenticationService;
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterRequest request) {
+    public ResponseEntity<ResponseModel<?>> register(@RequestBody @Valid RegisterRequest request) {
 
         if (authenticationService.isEmailExist(request.getEmail())) {
-            return new ResponseEntity<>("Email already exists", HttpStatus.CONFLICT);
+            ResponseModel<?>responseModel=new ResponseModel<>("failed","Email already exists",null);
+            return new ResponseEntity<>(responseModel, HttpStatus.CONFLICT);
         }
         authenticationService.register(request);
-        return new ResponseEntity<>("Registration successful", HttpStatus.CREATED);
+        ResponseModel<?>responseModel=new ResponseModel<>("success","Registration successful",null);
+        return new ResponseEntity<>(responseModel, HttpStatus.CREATED);
     }
     @PostMapping("/login")
     public ResponseEntity<ResponseModel<AuthResponse>> authenticate(@RequestBody @Valid AuthRequest request) {

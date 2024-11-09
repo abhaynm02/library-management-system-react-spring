@@ -5,16 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookResponseDto {
+public class TransactionDto {
+    private String id;
     private String bookId;
     private String bookName;
-    private String authorName;
-    private String description;
-    private int totalCopies;
-    private int availableCopy;
-
+    private LocalDate borrowedDate;
+    private LocalDate returnedDate;
+    private String status;
 }

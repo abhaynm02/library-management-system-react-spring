@@ -2,9 +2,11 @@ package com.abhaynm.library_management.service.serviceImp;
 
 import com.abhaynm.library_management.dto.BookAddDto;
 import com.abhaynm.library_management.dto.BookResponseDto;
+import com.abhaynm.library_management.dto.ResponseTransaction;
 import com.abhaynm.library_management.exceptions.coustomexceptions.BookAddingFailedException;
 import com.abhaynm.library_management.exceptions.coustomexceptions.BookNotFoundException;
 import com.abhaynm.library_management.model.Book;
+import com.abhaynm.library_management.model.Transaction;
 import com.abhaynm.library_management.repository.BookRepository;
 import com.abhaynm.library_management.service.BookService;
 import com.abhaynm.library_management.utility.IDGenerator;
@@ -75,6 +77,26 @@ public class BookServiceImp implements BookService {
         book.setDelete(true);
         bookRepository.save(book);
     }
+
+    @Override
+    public List<ResponseTransaction> findTransactionForBook(String bookId) {
+        Book book = getBook(bookId);
+
+        List<ResponseTransaction> responseTransactions = book.getTransactions().stream()
+                .map(transaction -> new ResponseTransaction(
+                        transaction.getId(),
+                        transaction.getUser().getId().toString(),
+                        transaction.getUser().getName(),
+                        transaction.getBorrowedDate(),
+                        transaction.getReturnedDate(),
+                        transaction.getStatus().name()
+                ))
+                .collect(Collectors.toList());
+
+        log.info("transactions:{}", responseTransactions.toString());
+        return responseTransactions;
+    }
+
 
     private Book getBook(String bookId) {
         return bookRepository.findById(bookId).orElseThrow(()-> new BookNotFoundException("Book not found with this id"+ bookId));
